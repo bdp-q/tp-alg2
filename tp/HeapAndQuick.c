@@ -4,7 +4,7 @@ as operações ou coloca do jeito que um nao programador entenderia?)*/
 se é de livre escolha, ou se ele prefere num arquivo só*/
 /*a enfermeira deve poder checar se é heap e deve fazer o heapfy ou 
 o programa deveria fazer isso automaticamente?*/
-/* Colocar apenas o valor de prioridade ou tem que ser uma struct? pra ter um nome?*/
+/* Colocar apenas o valor de prioridade ou tem que ser uma struct? pra ter um nome? H: Como o enunciado pede nome, acho que struct.*/
 
 /* Haico, eu bote o padrão do código da maneira que o professor faz em sala,
 pq eu tenho certeza que ele vai gostar, mas podemos mudar se vc achar melhor!*/
@@ -21,6 +21,12 @@ pq eu tenho certeza que ele vai gostar, mas podemos mudar se vc achar melhor!*/
    Data da ultima atualizacao: 2025/2
 ----------------------------------------------------------------------------------------*/
 #include <stdio.h>
+
+//como nao temos definido se precisa da struct pro nome, vou supor que precisa.
+struct paciente {
+	int prioridade;
+	char nome;
+};
 
 
 /*funções vem aqui, nenhuma dela tem os parametros ou tipo correto ainda*/
