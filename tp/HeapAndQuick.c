@@ -6,6 +6,10 @@ se é de livre escolha, ou se ele prefere num arquivo só*/
 o programa deveria fazer isso automaticamente?*/
 /* Colocar apenas o valor de prioridade ou tem que ser uma struct? pra ter um nome?*/
 
+/* vetor de número aleatorios, pode ser negativo? posso colocar um min e max?*/
+/* precisa imprimir o vetor de 1024 elementos? não né*/
+/* não precisa checar se ordenou direito? ok né ...*/
+
 /* Haico, eu bote o padrão do código da maneira que o professor faz em sala,
 pq eu tenho certeza que ele vai gostar, mas podemos mudar se vc achar melhor!*/
 
@@ -21,8 +25,9 @@ pq eu tenho certeza que ele vai gostar, mas podemos mudar se vc achar melhor!*/
    Data da ultima atualizacao: 2025/2
 ----------------------------------------------------------------------------------------*/
 #include <stdio.h>
-
-
+#include <stdlib.h>
+#include <time.h>
+#define TAM_V 1024
 /*funções vem aqui, nenhuma dela tem os parametros ou tipo correto ainda*/
 void InicHeap(){
     puts("iniciou o heap!");
@@ -56,12 +61,125 @@ void Heapsort(){
     puts("ordena em Heap");
 }
 
-void QuickSort(){ //talvez criar uma funcao pra selecao do pivo? nao sei
-    puts("Ordena em quicksort");
+void Particao(int vetor[],int esq, int dir, int *pos_pivo,int *trocas, int*comp){
+    int aux;
+    int i = esq;
+    int j = dir;
+    int pivo = vetor[esq];
+
+    while (i < j){
+        while((vetor[i] <= pivo) && (i < dir)){
+           (*comp)++;
+            i++;
+        }
+        while ((vetor[j] > pivo)){
+            (*comp)++;
+            j--;
+        }
+        if (i < j){
+           (*trocas)++;
+            aux = vetor[j];
+            vetor[j] = vetor[i];
+            vetor[i] = aux;
+
+        }
+    }
+    aux = vetor[j];
+    vetor[j] = vetor[esq];
+    vetor[esq] = aux;
+    *pos_pivo = j;
+   (*trocas)++;
 }
 
-void SelectSort(){
-    puts("ordena em Select Sort");
+
+void EscolhePivo(int vetor[], int esq, int dir){
+    int aux;
+    int mediana = (esq + dir)/2;
+
+    if (vetor[esq] > vetor[mediana]) {
+        aux = vetor[esq];
+        vetor[esq] = vetor[mediana];
+        vetor[mediana] = aux;
+    }
+    if (vetor[esq] > vetor[dir]) {
+        aux = vetor[esq];
+        vetor[esq] = vetor[dir];
+        vetor[dir] = aux;
+    }
+
+    if (vetor[mediana] > vetor[dir]) {
+        aux = vetor[mediana];
+        vetor[mediana] = vetor[dir];
+        vetor[dir] = aux;
+    }
+    aux = vetor[mediana]; 
+    vetor[mediana] = vetor[esq]; 
+    vetor[esq] = aux; //colocamos a mediana dos 3 valores checados no vetor esq 
+}
+
+void QuickSort(int vetor[], int esq, int dir,int *trocas, int *comp){ //talvez criar uma funcao pra selecao do pivo? nao sei
+    int pos_pivo;
+    if (esq < dir){
+        EscolhePivo(vetor,esq,dir);
+        Particao(vetor,esq,dir,&pos_pivo,trocas,comp);
+        QuickSort(vetor,esq,pos_pivo - 1,trocas,comp);
+        QuickSort(vetor,pos_pivo + 1,dir,trocas,comp);
+    }
+}
+
+void SelectSort(int vetor[], int tam){ 
+	int temp;
+	int menor;
+    int trocas = 0;
+    int comp = 0;
+
+	for (int i = 0; i < tam-1; i++)
+	{
+		menor = i;
+		for (int j = i + 1; j < tam; j++){
+            if(vetor[j] < vetor[menor]){
+                menor = j;
+            }
+            comp++;
+        }
+        if (menor != i){
+            temp = vetor[menor];
+            vetor[menor] = vetor[i];
+            vetor[i] = temp;
+            trocas++;
+        }
+	}
+
+    printf("comparacoes: %d ", comp);
+    printf("trocas: %d", trocas);
+	return;
+}
+
+void GeraVetorAleat(int vetor[]){ // essa funcao cria o vetor de números aleatórios com 1024 elementos
+    srand(time(NULL));
+    for (int i = 0; i < TAM_V; i++)
+    {
+        vetor[i] = rand() % 100;
+   //     printf("%d ",vetor[i]);
+    }
+    puts("criou o vetor aleatorio!");
+
+}
+
+void ComparaAlg(){ 
+    int vetor[TAM_V];
+    int trocas_quick = 0;
+    int comp_quick = 0;
+    puts("trocas e comparações do HeapSort:");
+
+    puts("trocas e comparações do  QuickSort:");
+    GeraVetorAleat(vetor); //tem problema fazer assim?
+    QuickSort(vetor,0,TAM_V-1,&trocas_quick,&comp_quick);
+    printf("comparacoes: %d ", comp_quick);
+    printf("trocas: %d\n", trocas_quick);
+    puts("trocas e comparações do SelectSort:");
+    GeraVetorAleat(vetor);
+    SelectSort(vetor,TAM_V);
 }
 
 void DevMode(){
@@ -125,6 +243,7 @@ void DevMode(){
         
         case 7:
             //implementar las paradas
+            ComparaAlg();
             break;
             
         default:
@@ -135,11 +254,6 @@ void DevMode(){
 
     } while (operacao != 0);
 
-}
-
-void CriaVetor(){ // essa funcao cria o vetor de números aleatórios com 1024 elementos
-    puts("criou o vetor aleatorio!");
-    
 }
 
 //nao sei se nao vai ter mais funcoes (tipo a sacodeHeap)
