@@ -129,9 +129,11 @@ void SacodeHeap(int vetor[],int tam,int *trocas,int *comp){
     int aux;
     int i = 2;
     while (i <= tam){
-        (*comp)++;
-        if ((i < tam) && (vetor[i] < vetor[i+1]))
-            i++;
+        if (i < tam){
+            (*comp)++;    
+            if(vetor[i] < vetor[i+1])
+                i++;
+        }
         (*comp)++;
         if (vetor[i/2] >= vetor[i]) 
             return;

@@ -1,4 +1,4 @@
-#include <stdio.h>
+    #include <stdio.h>
 #include "heap.h"
 #include "ordenacao.h"
 
@@ -6,7 +6,6 @@
 void InsereHeapV(int vetor[],int tam,int *trocas,int *comp){
     int aux;
     int i = tam;
-    (*comp)++;
     while ((i > 1) && (vetor[i/2] < vetor[i])){
         (*trocas)++;
         aux = vetor[i/2];
