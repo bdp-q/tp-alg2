@@ -3,12 +3,14 @@
 #include "ordenacao.h"
 
 
-void InsereHeapV(int vetor[],int tam,int *trocas,int *comp){
+void InsereHeapV(int vetor[],int tam,int *trocas,int *comp,int *compHeapfy, int *trocasHeapfy){
     int aux;
     int i = tam;
     (*comp)++;
+    (*compHeapfy)++;
     while ((i > 1) && (vetor[i/2] < vetor[i])){
         (*trocas)++;
+        (*trocasHeapfy)++;
         aux = vetor[i/2];
         vetor[i/2] = vetor[i];
         vetor[i] = aux;
@@ -16,16 +18,16 @@ void InsereHeapV(int vetor[],int tam,int *trocas,int *comp){
     }
 }
 
-void HeapfyV(int vetor[], int tam,int *trocas,int *comp) {
+void HeapfyV(int vetor[], int tam,int *trocas,int *comp, int *compHeapfy, int *trocasHeapfy) {
     int i;
     for (i = 1; i < tam; i++){
-        InsereHeapV(vetor,i,trocas,comp);
+        InsereHeapV(vetor,i,trocas,comp,compHeapfy,trocasHeapfy);
     }
 }
 
-void HeapSort(int vetor[],int tam, int *trocas, int *comp){
+void HeapSort(int vetor[],int tam, int *trocas, int *comp, int *compHeapfy, int*trocasHeapfy){
     int aux;
-    HeapfyV(vetor,tam,trocas,comp);
+    HeapfyV(vetor,tam,trocas,comp,compHeapfy, trocasHeapfy);
     /* pega o primeiro elemento do Heap e coloca na ultima posição*/
     for (int i = tam; i > 1; i--){
         aux = vetor[1];

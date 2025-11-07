@@ -2,7 +2,7 @@
 #define ORDENACAO
 
 /* Função que utiliza do TAD Heap para ordenar um vetor*/
-void HeapSort(int vetor[],int tam, int *trocas, int *comp);
+void HeapSort(int vetor[],int tam, int *trocas, int *comp, int *compHeapfy, int *trocasHeapfy);
 
 /* Função que particiona o vetor em subvetores baseado no pivô. */
 void Particao(int vetor[],int esq, int dir, int *pos_pivo,int *trocas, int*comp); 
