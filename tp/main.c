@@ -66,17 +66,22 @@ void ComparaAlg(int tam){
     int comp_quick = 0;
     int trocas_heap = 0;
     int comp_heap = 0;
-
+	int comp_heapfy = 0;
+	int trocas_heapfy = 0;
+	
     puts("");
     puts("Segue a comparação da performance em ordenação de 3 algoritmos para esse vetor:");
     GeraVetorAleat(vetor,tam);
     ImprimeVetor(vetor,tam);
 
     puts("trocas e comparações do HeapSort:");
-    HeapSort(vetor,tam,&trocas_heap,&comp_heap);
+    HeapSort(vetor,tam,&trocas_heap,&comp_heap,&comp_heapfy,&trocas_heapfy);
     ImprimeVetor(vetor,tam);
     printf("comparações: %d\n", comp_heap);
     printf("trocas: %d\n", trocas_heap);
+    printf("trocas e comparações do heapfy:\n");
+	printf("comparações: %d\n", comp_heapfy);
+    printf("trocas: %d\n", trocas_heapfy);
     puts("");
 
     puts("trocas e comparações do QuickSort:");
@@ -113,6 +118,9 @@ int main(){
     int prio;
     int nova_prio;
     char nome[100];
+    int compHeapfy = 0;
+    int trocasHeapfy = 0;
+    
     puts("==================================================================================="); 
     puts("Olá Enfermeira Chefe! Bem vindo ao sistema de fila de prioridades do Hospital.");
     puts("Feito por Breno Demio Padilha e Haico de Toledo Boehs para a disciplina de Alg 2");
@@ -170,7 +178,12 @@ int main(){
                 break;
             }
             printf("Chamando paciente (nome: %s | prio: %d)", fila[1].nome,fila[1].prioridade);
-            RemoveHeap(fila,&tam_fila);
+            RemoveHeap(fila,&tam_fila,&compHeapfy,&trocasHeapfy);
+            printf("Comparações e trocas do Heapfy (usado na função):\n");
+        	printf("Comparações: %d\n", compHeapfy);
+        	printf("Trocas: %d\n", trocasHeapfy);
+            compHeapfy = 0;
+            trocasHeapfy = 0;
             break;
         
         case 3:
@@ -191,10 +204,16 @@ int main(){
                 break;
             }
             LimpaBuffer();
-            if(!AlteraHeap(fila,tam_fila,prio, nova_prio,nome))
+            if(!AlteraHeap(fila,tam_fila,prio, nova_prio,nome, &compHeapfy, &trocasHeapfy))
                 printf("Não existe esse paciente!");
-            else
+            else {
                 printf("Prioridade atualizada!");
+            	printf("Comparações e trocas do Heapfy (usado na função):\n");
+            	printf("Comparações: %d\n", compHeapfy);
+            	printf("Trocas: %d\n", trocasHeapfy);
+            	compHeapfy = 0;
+            	trocasHeapfy = 0;
+            }
             break;
 
         case 5:
