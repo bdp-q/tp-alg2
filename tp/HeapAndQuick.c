@@ -29,40 +29,152 @@ pq eu tenho certeza que ele vai gostar, mas podemos mudar se vc achar melhor!*/
 #include <time.h>
 #define TAM_V 1024
 
-//como nao temos definido se precisa da struct pro nome, vou supor que precisa.
+
 struct paciente {
 	int prioridade;
-	char nome;
+	char *nome;
 };
 
-/*funções vem aqui, nenhuma dela tem os parametros ou tipo correto ainda*/
-void InicHeap(){
-    puts("iniciou o heap!");
+
+void InicHeap(struct paciente *heap, int *tam, int tammax) {
+    int i;
+
+    *tam = 0; 
+	
+	/*reseta todos os elementos*/
+    for (i = 0; i < tammax; i++) {
+        heap[i].nome = NULL;
+        heap[i].prioridade = 0;
+    }
 }
 
-void InsereHeap(){
-    puts("inseriu no heap");
+
+/*funcao auxiliar para o heapfy*/
+void InsereHeapEF(struct paciente *heap, int tam){
+	struct paciente aux;
+	int i=tam;
+	
+	while (i>1 && heap[i/2].prioridade < heap[i].prioridade){
+		aux = heap[i/2];
+		heap[i/2] = heap[i];
+		heap[i] = aux;
+		i = i/2;
+	}
+	
 }
 
-void RemoveHeap(){
-    puts("Removeu no heap");
+
+void Heapfy(struct paciente *heap, int tam, int i) {
+    int maior = i;             
+    int esq = 2 * i;            
+    int dir = 2 * i + 1;        
+    struct paciente aux;        
+
+    /*se o elemento esquerdo existe e é maior que o atual*/
+    if (esq <= tam && heap[esq].prioridade > heap[maior].prioridade)
+        maior = esq;
+
+    /*se o elemento direito existe e é maior que o atual*/
+    if (dir <= tam && heap[dir].prioridade > heap[maior].prioridade)
+        maior = dir;
+
+    /*se atual não eh o maior, troca e chama o heapfy denovo*/
+    if (maior != i) {
+        aux = heap[i];
+        heap[i] = heap[maior];
+        heap[maior] = aux;
+        Heapfy(heap, tam, maior);  
+    }
 }
 
-void ImprimeHeap(){
-    puts("imprimiu no heap");
+
+
+
+void InsereHeap(struct paciente *heap, int *tam, int prio, char *nome){
+	struct paciente novo;
+	
+	/*cria novo paciente*/
+	novo.nome = nome;
+	novo.prioridade = prio;
+	
+	/*adiciona no final e heapifica*/
+	(*tam)++;
+	heap[*tam] = novo;
+	InsereHeapEF(heap, *tam); 
+	
+    return;
 }
 
-void AlteraHeap(){
-    puts("Alterou no heap");
+
+void ImprimeHeap(struct paciente *heap, int tam){
+	int i;
+	
+	/*se a fila eh vazia*/	
+	if (tam == 0){
+		printf("Heap Vazia\n");
+		return;
+	}
+	
+	printf("Heap de Pacientes: ");
+	for (i=1; i<=tam; i++)
+		printf("(nome: %s | prio: %d) ", heap[i].nome, heap[i].prioridade);
+	printf("\n");
 }
 
-void ChecaHeap(){
-    puts("ve se é heap");
+/*auxiliar para a alteraheap*/
+int AchaPaciente(struct paciente *heap, int tam, int prio, char *nome){
+	int i=1;
+	
+	/*itera ate a heap acabar ou achar o elemento*/
+	while (i <= tam){
+		if (heap[i].nome == nome && heap[i].prioridade == prio)
+			return i;
+		i++;
+	}
+	
+
+	return -1;
 }
 
-void Heapfy(){
-    puts("transformou em heap");
+
+int RemoveHeap(struct paciente *heap, int *tam){
+
+	if (*tam == 0)
+		return 0;
+	
+	/*o removido recebe o valor do ultimo elemento da heap*/
+	heap[1] = heap[*tam];
+	(*tam)--;
+	Heapfy(heap, *tam, 1);
+	
+	return 1;
 }
+
+
+int AlteraHeap(struct paciente *heap, int tam, int prio, int novaprio, char *nome){
+	int pos = AchaPaciente(heap, tam, prio, nome);
+	
+	/*elemento nao existe*/
+	if (pos == -1)
+		return 0;
+	
+	/*atualiza prioridade*/
+	heap[pos].prioridade = novaprio;
+	Heapfy(heap, tam, 1);
+	return 1;
+}
+
+
+int ChecaHeap(struct paciente *heap, int tam){
+    int i;
+    
+    for (i=tam; i>1; i--)
+    	if (i/2 >= 1 && heap[i].prioridade > heap[i/2].prioridade)
+    		return 0;
+    
+    return 1;
+}
+
 
 void Heapsort(){
     puts("ordena em Heap");
