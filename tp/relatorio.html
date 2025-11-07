@@ -77,5 +77,33 @@
     </li>
     </ol>
 
+    <h3>TAD Heap</h3>
+        <p>Implementamos o TAD Heap como um vetor de structs, com os campos nome (string) e prioridade (int).</p>
+        <p>As seguintes funções foram implementadas para o TAD Heap:</p>
+        <li>
+            <b>InicHeap: </b>
+            <p>Inicia a Heap, atribuindo 0 à váriavel que controla o tamanho do vetor e atribuindo valor nulo para suas posições; </p>
+
+            <b>InsereHeap: </b>
+            <p>Função utilizada para inserir um novo paciente na fila de prioridades. Cria um novo paciente a partir do nome e prioridade inseridos pela enfermeira e coloca no fim do vetor. Então, executa a função InsereHeapAUX, que leva o elemento a sua posição correta dentro do Heap. Também foi necessário implementar a função auxiliar copiaString, que manipula um vetor de char, para garantir que o nome do paciente fosse inserido corretamente.</p>
+
+            <b>RemoveHeap</b>
+            <p>Função usada para remover o paciente com maior prioridade. Primeiro checa se a lista é nula, caso seja, retorna 0. Caso contrário, o primeiro elemento do vetor recebe o valor do elemento da última posição e o tamanho é decrementado. Por fim, executa-se a função Heapfy para que a condição de Heap não seja violada. Retorna 1 caso a operação seja bem-sucedida.</p>
+
+            <b>ImprimeHeap</b>
+            <p>Função que imprime a Heap. Caso a Heap seja vazia, imprime "Heap Vazia". Caso contrário, imprime com o formato "Heap de Pacientes: (nome: ### | prio: ###) ...". </p>
+
+            <b>AlteraHeap</b>
+            <p>Altera a prioridade de um paciente selecionado na Heap. Permite que o usuário digite o nome e a prioridade atual de um paciente, caso ele não exista na fila, a função retorna 0. Caso exista, altera a prioridade conforme o input do usuário e verifica se a condição de Heap foi mantida. Se a Heap tiver sido violada, executa a função Heapfy. Para verificar a existência de um paciente, usamos a função auxiliar AchaPaciente, que por sua vez, itera sobre o vetor e compara a prioridade esperada com a prioridade do paciente atual. Também compara o nome do paciente, usando a função auxiliar ComparaString.   </p>
+
+            <b>ChecaHeap</b>
+            <p>Verifica se um vetor é uma Heap. Caso algum elemento do vetor não obedeça a condição heap[i] <= heap[2i] retorna 0. Se a heap for válida retorna 1. </p>
+
+            <b>Heapfy</b>
+            <p>Transforma um vetor genérico em heap. Percorre o vetor executando a função InsereHeapEF (igual a InsereHeapAUX, mas rastreia o número de comparações feitas pelo heapfy), ou seja, a cada iteração, aloca o elemento atual conforme sua prioridade na heap. </p>
+
+            <b>Sacode Heap</b>
+        </li>
+
 </body>
 </html>
