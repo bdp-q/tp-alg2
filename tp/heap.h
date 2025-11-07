@@ -32,7 +32,7 @@ int AlteraHeap(struct paciente *heap, int tam, int prio, int novaprio, char *nom
 int ChecaHeap(struct paciente *heap, int tam);
 
 /* Transforma um vetor em Heap */
-void Heapfy(struct paciente *heap, int tam, int i);
+void Heapfy(struct paciente *heap, int tam);
 
 /* Função que reorganiza o Heap após apenas seu primeiro elemento estar errado*/
 void SacodeHeap(int vetor[],int tam,int *trocas, int *comp); 

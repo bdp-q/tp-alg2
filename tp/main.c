@@ -170,6 +170,7 @@ int main(){
                 break;
             }
             printf("Chamando paciente (nome: %s | prio: %d)", fila[1].nome,fila[1].prioridade);
+            RemoveHeap(fila,&tam_fila);
             break;
         
         case 3:

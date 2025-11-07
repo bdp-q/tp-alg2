@@ -23,20 +23,6 @@ void InicHeap(struct paciente *heap, int *tam, int tammax) {
     }
 }
 
-/*funcao auxiliar para o heapfy que ...*/
-void InsereHeapEF(struct paciente *heap, int tam){
-	struct paciente aux;
-	int i=tam;
-
-	while (i>1 && heap[i/2].prioridade < heap[i].prioridade){
-		aux = heap[i/2];
-		heap[i/2] = heap[i];
-		heap[i] = aux;
-		i = i/2;
-	}
-
-}
-
 void ImprimeHeap(struct paciente *heap, int tam){
 	int i;
 
@@ -52,19 +38,23 @@ void ImprimeHeap(struct paciente *heap, int tam){
 	printf("\n");
 }
 
-void InsereHeap(struct paciente *heap, int *tam, int prio, char *nome){
-	struct paciente novo;
+/* função auxiliar que insere o último elemento do vetor na sua posição no Heap*/
+void InsereHeapEF(struct paciente *heap,int tam){
+    struct paciente aux;
+    int i = tam;
+    while ((i > 1) && (heap[i/2].prioridade < heap[i].prioridade)){
+        aux = heap[i/2];
+        heap[i/2] = heap[i];
+        heap[i] = aux;
+        i = i/2;
+    }
+}
 
-	/*cria novo paciente*/
-    CopiaString(novo.nome, nome);
-	novo.prioridade = prio;
-
-	/*adiciona no final e heapifica*/
-	(*tam)++;
-	heap[*tam] = novo;
-	InsereHeapEF(heap, *tam); 
-
-    return;
+void InsereHeap(struct paciente *heap,int *tam,int prio, char *nome){
+    (*tam)++;
+    CopiaString(heap[*tam].nome,nome);
+    heap[*tam].prioridade = prio;
+    InsereHeapEF(heap,*(tam));
 }
 
 int RemoveHeap(struct paciente *heap, int *tam){
@@ -75,8 +65,8 @@ int RemoveHeap(struct paciente *heap, int *tam){
 	/*o removido recebe o valor do ultimo elemento da heap*/
 	heap[1] = heap[*tam];
 	(*tam)--;
-    if (!ChecaHeap(heap,*tam)){
-        Heapfy(heap, *tam, 1);
+    if(!ChecaHeap(heap,*tam)){
+        Heapfy(heap, *tam);
     }
 	return 1;
 }
@@ -100,7 +90,6 @@ int AchaPaciente(struct paciente *heap, int tam, int prio, char *nome){
 		i++;
 	}
 
-
 	return -1;
 }
 
@@ -114,7 +103,7 @@ int AlteraHeap(struct paciente *heap, int tam, int prio, int nova_prio, char *no
 	/*atualiza prioridade*/
 	heap[pos].prioridade = nova_prio;
     if (!ChecaHeap(heap,tam))
-	    Heapfy(heap, tam, 1);
+	    Heapfy(heap, tam);
 	
     return 1;
 }
@@ -129,26 +118,10 @@ int ChecaHeap(struct paciente *heap, int tam){
     return 1;
 }
 
-void Heapfy(struct paciente *heap, int tam, int i) {
-    int maior = i;             
-    int esq = 2 * i;            
-    int dir = 2 * i + 1;        
-    struct paciente aux;        
-
-    /*se o elemento esquerdo existe e é maior que o atual*/
-    if (esq <= tam && heap[esq].prioridade > heap[maior].prioridade)
-        maior = esq;
-
-    /*se o elemento direito existe e é maior que o atual*/
-    if (dir <= tam && heap[dir].prioridade > heap[maior].prioridade)
-        maior = dir;
-
-    /*se atual não eh o maior, troca e chama o heapfy denovo*/
-    if (maior != i) {
-        aux = heap[i];
-        heap[i] = heap[maior];
-        heap[maior] = aux;
-        Heapfy(heap, tam, maior);  
+void Heapfy(struct paciente *heap, int tam) {
+    int i;
+    for (i = 1; i < tam; i++){
+        InsereHeapEF(heap,i);
     }
 }
 
